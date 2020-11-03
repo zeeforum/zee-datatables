@@ -1,0 +1,31 @@
+{
+  "name": "zee-datatables",
+  "version": "1.0.1",
+  "description": "A Vue.js 2 Plugin for DataTables",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "sprintf-js": "^1.1.2",
+    "vue": "^2.6.11",
+    "vue-confirm-dialog": "^1.0.2",
+    "vue-fragment": "^1.5.1",
+    "vue-router": "^3.4.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zeeforum/zee-datatables.git"
+  },
+  "keywords": [
+    "datatable",
+    "server",
+    "side"
+  ],
+  "author": "Zartash Zulfiqar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zeeforum/zee-datatables/issues"
+  },
+  "homepage": "https://github.com/zeeforum/zee-datatables#readme"
+}
