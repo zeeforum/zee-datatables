@@ -41,6 +41,7 @@ import Vue from "vue";
 import { sprintf, vsprintf } from "sprintf-js";
 
 export default {
+	name: 'ZeeDataField',
 	props: ["col", "row"],
 
 	methods: {
@@ -58,7 +59,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .img-xs {
 	width: 75px;
 }

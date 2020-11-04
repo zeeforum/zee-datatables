@@ -1,14 +1,14 @@
 <template>
 	<div class="table-responsive">
-		<table class="table table-hover table-bordered">
-			<thead>
+		<table class="table table-hover table-bordered"  v-if="columns || rows">
+			<thead v-if="columns">
 				<tr>
 					<th v-for="col in columns" :key="col.fieldName">
 						{{ col.fieldLabel }}
 					</th>
 				</tr>
 			</thead>
-			<tbody v-if="rows.length > 0">
+			<tbody v-if="columns && columns.length > 0 && rows && rows.length > 0">
 				<tr v-for="row in rows" :key="row.id">
 					<td v-for="col in columns" :key="col.fieldName + row.id">
 						<fragment
@@ -79,7 +79,7 @@
 				</tr>
 			</tbody>
 			<tr v-else>
-				<td colspan="6">No Record Found!</td>
+				<td :colspan="columns && columns.length">No Record Found!</td>
 			</tr>
 		</table>
 
@@ -88,15 +88,21 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
+import VueConfirmDialog from 'vue-confirm-dialog';
+import { Plugin } from "vue-fragment";
 import { sprintf, vsprintf } from "sprintf-js";
 import DataField from "./DataField";
-import VueConfirmDialog from 'vue-confirm-dialog';
 
+// Confirm Dialog
 Vue.use(VueConfirmDialog);
 Vue.component('vue-confirm-dialog', VueConfirmDialog.default);
 
+// Fragment
+Vue.use(Plugin);
+
 export default {
+	name: 'ZeeDataTable',
 	props: ["columns", "rows", "results", 'editUrl', 'options'],
 
 	data() {
@@ -106,7 +112,9 @@ export default {
 	},
 
 	created() {
-		this.path = this.$router.currentRoute.path;
+		if (this.$router) {
+			this.path = this.$router.currentRoute.path;
+		}
 	},
 
 	components: {
@@ -146,7 +154,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 table tr td {
 	vertical-align: middle;
 }
