@@ -1,6 +1,6 @@
 <template>
-	<div class="table-responsive">
-		<table class="table table-hover table-bordered"  v-if="columns || rows">
+	<div :class="[layout.responsive && 'table-responsive', layout.main]">
+		<table class="table" :class="[layout.table]" v-if="columns || rows">
 			<thead v-if="columns">
 				<tr>
 					<th v-for="col in columns" :key="col.fieldName">
@@ -103,7 +103,7 @@ Vue.use(Plugin);
 
 export default {
 	name: 'ZeeDataTable',
-	props: ["columns", "rows", "results", 'editUrl', 'options'],
+	props: ["columns", "rows", "results", 'editUrl', 'options', 'layout'],
 
 	data() {
 		return {
@@ -155,6 +155,10 @@ export default {
 </script>
 
 <style scoped>
+table {
+	width: 100%;
+}
+
 table tr td {
 	vertical-align: middle;
 }

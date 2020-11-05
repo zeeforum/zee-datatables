@@ -67,7 +67,7 @@ data() {
 
 #### Binding Variable to Component
 
-Now you have to bind *columns* and *rows* with data table:
+Now you have to bind ***columns*** and ***rows*** with data table:
 
 ```
 <zee-data-table v-bind:columns="columns" v-bind:rows="rows"></zee-data-table>
@@ -79,4 +79,26 @@ Now you have to bind *columns* and *rows* with data table:
 <zee-data-table :columns="columns" :rows="rows"></zee-data-table>
 ```
 
-It's still *simple* but powerful datatable. More options will be discussed later.
+### Options
+
+Added layout options in DataTable. The datatable also support bootstrap 4. Customize layout option:
+
+```
+<zee-data-table :columns="columns" :rows="rows" :layout="layout"></zee-data-table>
+```
+
+In component data also add ***layout*** object, as you have above given columns and rows array:
+
+```
+data() {
+    return {
+        layout: {
+            main: 'container', // can use any bootstrap or custom class you want to use like 'fluid-container'. You can use multiple classes separated by space
+            table: 'table-hover table-bordered table-primary', //Classes added on table tag.
+            responsive: true //use if you want to use bootstrap responsive table
+        }
+    };
+}
+```
+
+It's still ***simple*** but powerful datatable. More options will be discussed later.
