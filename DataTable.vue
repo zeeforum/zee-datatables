@@ -4,7 +4,15 @@
 			<thead v-if="columns">
 				<tr>
 					<th v-for="col in columns" :key="col.fieldName">
-						{{ col.fieldLabel }}
+						<div class="pointer" v-if="col.sort" @click="changeSort(col.orderBy, col.fieldName)">
+							{{ col.fieldLabel }}
+							<span class="sort label-right">
+								{{ typeof col.orderBy === 'string' ? col.orderBy.charAt(0).toUpperCase() : 'A' }}
+							</span>
+						</div>
+						<div v-else>
+							{{ col.fieldLabel }}
+						</div>
 					</th>
 				</tr>
 			</thead>
@@ -115,10 +123,18 @@ export default {
 		if (this.$router) {
 			this.path = this.$router.currentRoute.path;
 		}
+
+		this.initlizeSorting();
 	},
 
 	components: {
 		appDataField: DataField,
+	},
+
+	computed: {
+		sortedRows() {
+			return this.getSorted();
+		}
 	},
 
 	methods: {
@@ -149,6 +165,73 @@ export default {
 
 		capitalizeFirstLetter(str) {
 			return str.charAt(0).toUpperCase() + str.slice(1);
+		},
+
+		getSorted() {
+			let columns = this.columns;
+
+			for (var col in columns) {
+				if (columns[col].sort && columns[col].orderBy) {
+					return this.sortRows(columns[col].orderBy, columns[col].fieldName);
+				}
+			}
+
+			return this.rows;
+		},
+
+		sortRows(sort, fieldName) {
+			if (sort) {
+				if (typeof sort == 'string') {
+					if (sort.toLowerCase() == "d" || sort.toLowerCase() == "desc") {
+						return this.rows.sort((a, b) => a[fieldName] < b[fieldName] ? 1 : ((b[fieldName] < a[fieldName]) ? -1 : 0));
+					}
+				}
+				
+				this.rows.sort((a, b) => a[fieldName] > b[fieldName] ? 1 : ((b[fieldName] > a[fieldName]) ? -1 : 0));
+			}
+
+			return this.rows;
+		},
+
+		changeSort(sort, fieldName) {
+			let sorting;
+			if (sort) {
+				sorting = (typeof sort == 'string' && (sort.toLowerCase() == 'd' || sort.toLowerCase() == 'desc')) ? 'a' : 'd';
+			} else {
+				sorting = 'd';
+			}
+
+			let columns = this.columns;
+			if (columns) {
+				for (var col in columns) {
+					if (columns[col].sort && columns[col].fieldName == fieldName) {
+						this.columns[col].orderBy = sorting;
+					} else if (columns[col].sort) {
+						this.columns[col].orderBy = '';
+					}
+				}
+			}
+
+			this.getSorted();
+		},
+
+		initlizeSorting() {
+			let columns = this.columns;
+			let isEnabledSort = false;
+
+			if (columns) {
+				for (var col in columns) {
+					if (isEnabledSort) {
+						this.columns[col].orderBy = '';
+						continue;
+					}
+
+					if (columns[col].sort) {
+						this.columns[col].orderBy = typeof columns[col].orderBy == 'string' ? columns[col].orderBy : 'A';
+						isEnabledSort = true;
+					}
+				}
+			}
 		}
 	},
 };
@@ -161,5 +244,21 @@ table {
 
 table tr td {
 	vertical-align: middle;
+}
+
+.sort {
+	font-size: 10px;
+}
+
+.label-right {
+	text-align: right;
+	display: block;
+	float: right;
+	clear: both;
+	margin-top: 4px;
+}
+
+.pointer {
+	cursor: pointer;
 }
 </style>
